@@ -100,3 +100,42 @@ def compute_avg_monthly_difference(time_series, first_year, last_years)
         #aggiungo ogni anno considerato alla lista, mediante il while e aggiungendo un anno al precedentemente
         #fino ad arrivare all'altro estremo dell'intervallo
         y=y+1
+    #print('Lista anni: {}'.format(lista_anni))
+    #print solo di verifica
+
+
+    #inizializzo la lista da far tornare alla funzione compute_avg_monthly_difference
+    lista_variazioni=[]
+
+    for i in range(1,13):
+        #ciclo con indice i, che corrisponde ai rispettivi mesi dell'anno
+        #i=1=gennaio, i=2=febbraio, ..., i=12=dicembre
+        m=0
+        variazione_mese=0
+        lista_valori=[]
+        for item in lista:
+        #elemento della lista= anno + mese + numero passeggeri
+            #vedo se il mese di ogni riga è uguale al numero dell'indice i, considerando anche l'anno
+            if item[1]==i and item[0] in lista_anni:
+                #aggiungo il numero di passeggeri alla lista dei valori
+                lista_valori.append(item[2])
+        #assegno alla variabile m il numero corrispondente alla lunghezza della lista 
+        m=len(lista_valori)
+        risultato=0
+        while m>1:
+            risultato=risultato + lista_valori[m-1] - lista_valori [m-2]
+            #ho la variazione, data dalla variabile 'risultato'
+            m=m-1
+        variazione_mese=risultato/(len(lista_valori)-1)
+        #calcolo la variazione media mensile
+
+        lista_variazioni.append(variazione_mese)
+        #procedo con il mese successivo, rappresentato dall'indice i
+        i=i+1
+        
+    print('Lista variazioni: {}'.format(lista_variazioni))
+    #stampo la lista solo come riferimento visivo
+
+    return lista_variazioni
+
+    
