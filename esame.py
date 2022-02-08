@@ -1,3 +1,6 @@
+class ExamException(Exception):
+    pass
+
 class CSVTimeSeriesFile():
     def __init__(self, name):
         self.name=name
