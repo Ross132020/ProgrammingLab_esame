@@ -8,8 +8,13 @@ class CSVTimeSeriesFile():
     def get_data(self):
         #metodo che deve tornare una lista di liste
         #apro il file 
-        #INSERIRE ECCEZIONE APERTURA FILE
-        my_file=open(self.name, 'r')
+
+        try:
+            my_file=open(self.name, 'r')
+            my_file.readline()
+        except:
+            raise ExamException('Errore in apertura file')
+        #nel caso non si aprisse, per esempio se il file non c'è o il nome del file inserito è sbagliato, alzo l'eccezione
 
         time_series=[]
         #inizializzo una lista vuota, che conterrà le liste
@@ -27,10 +32,18 @@ class CSVTimeSeriesFile():
                 data=elements[0] 
                 #elements[0]=anno-mese
 
+                #controllo se mancano valori
+                #nel caso mancassero, li considero come 0
+                if elements[1] == '':
+                    elements[1] =elements[1].replace('','0')
+
                 #converto la stringa 'passengers' (secondo elemento della lista 'elements') in numero
                 elements[1] = float(elements[1])
-                #associo il nome valore a elements[1]
-                valore=elements[1]
+
+                #controllo che i valori non siano negativi
+                #in caso faccio il valore assoluto
+                if elements[1] < 0:
+                    elements[1] = abs(elements[1])
                 
                 #aggiungo gli elementi sottoforma di lista nella lista inizializzata precedentemente
                 time_series.append(elements)
@@ -42,17 +55,37 @@ class CSVTimeSeriesFile():
         return time_series
 
 
-def compute_avg_monthly_difference(time_series, first_year, last_years)
-#time_series è la serie storica tornata dalla funzione get_data
-#first_year e last_years, sono gli estremi dell'intervallo di anni che si vuole considerare e vengono inseriti manualmente nel corpo del programma
-
-    my_file=open('data.csv','r')
-    #apro e leggo il file
-
-    #FARE ECCEZIONE APERTURA
+def compute_avg_monthly_difference(time_series, first_year, last_year):
+#time_series=serie storica tornata dalla funzione get_data
+#first_year e last_year sono gli estremi dell'intervallo di anni che si vuole considerare e vengono inseriti manualmente nel corpo del programma
+    try:
+        my_file=open('data.csv','r')
+        #apro e leggo il file
+        my_file.readline()
+    except:
+        raise ExamException('Errore in apertura file')
     
     #inizializzo una lista vuota in cui inserire i vari elementi del file ma sottoforma di valori interi e non stringhe
     lista=[]
+    
+    first_year= int(first_year)
+    last_year=int(last_year)
+    #passo i due valori inseriti nella funzione come interi, per utilizzarli nelle operazioni
+
+    if first_year < 0:
+        first_year=abs(first_year)
+    if last_year < 0:
+        last_year=abs(last_year)
+
+    lista anni=[]
+    #inizializzo una lista vuota in cui inserire gli anni presi in considerazione, in base all'intervallo di estremi first/last_year
+
+    y=first_year
+    while y <= last_year:
+        lista_anni.append(y)
+        y=y+1
+    print('Lista intervallo anni: {}'.format(lista_anni))
+    lungh_intervallo=len(lista_anni)
 
     for line in my_file:
         elemento=line.split(',')
@@ -84,7 +117,17 @@ def compute_avg_monthly_difference(time_series, first_year, last_years)
             new.append(mese)
             #aggiungo il mese alla lista 'new'
 
-            valore=int(elemento[1])
+            valore=(elemento[1])
+            if valore == '':
+                #se il valore in una data riga non è presente...
+                valore=valore.replace('','o')
+                #lo considero come uno zero
+            valore= int(valore)
+
+            #controllo che i valori non siano negativi, in caso faccio il valore assoluto
+            if valore < 0:
+                valore= abs(valore)
+
             new.append(valore)
             #aggiungo il numero dei passeggeri alla lista 'new'
 
@@ -95,17 +138,17 @@ def compute_avg_monthly_difference(time_series, first_year, last_years)
         #stampo gli elementi della lista 'lista'
         #ogni elemento sarà una lista formata da tre valori(anno, mese, numero)
 
-    #inizializzo una lista vuota in cui aggiungo gli anni che si andranno a prendere in considerazione
-    lista_anni=[]
-    y = first_year
-    while y<=last_years:
-        lista_anni.append(y)
-        #aggiungo ogni anno considerato alla lista, mediante il while e aggiungendo un anno al precedentemente
-        #fino ad arrivare all'altro estremo dell'intervallo
-        y=y+1
-    #print('Lista anni: {}'.format(lista_anni))
-    #print solo di verifica
-
+    #inizializzo una lista vuota in cui aggiungo tutti gli anni del file
+    anni=[]
+    for item in lista:
+        anni.append(item[0])
+    
+    #alzo eccezioni se gli anni inseriti come input non sono presenti nel file
+    if first_year not in anni:
+        raise ExamException('Il primo anno inserito nella funzione "compute_avg_monthly_difference" non è presente nel file)
+    
+    if last_year not in anni:
+        raise ExamException('Ultimo anno inserito nella funzione "compute_avg_monthly_difference" non presente nel file')
 
     #inizializzo la lista da far tornare alla funzione compute_avg_monthly_difference
     lista_variazioni=[]
@@ -116,15 +159,19 @@ def compute_avg_monthly_difference(time_series, first_year, last_years)
         m=0
         variazione_mese=0
         lista_valori=[]
+
         for item in lista:
-        #elemento della lista= anno + mese + numero passeggeri
-            #vedo se il mese di ogni riga è uguale al numero dell'indice i, considerando anche l'anno
+        #item= elemento della lista= anno + mese + numero passeggeri
+            #vedo se il mese di ogni riga è uguale al numero dell'indice i, considerando anche se l'anno di quella riga è presente nella lista_anni
+            #lista_anni= lista che raccoglie gli anni compresi nell'intervallo tra first_year e last_year
             if item[1]==i and item[0] in lista_anni:
                 #aggiungo il numero di passeggeri alla lista dei valori
                 lista_valori.append(item[2])
+
         #assegno alla variabile m il numero corrispondente alla lunghezza della lista 
         m=len(lista_valori)
         risultato=0
+        
         while m>1:
             risultato=risultato + lista_valori[m-1] - lista_valori [m-2]
             #ho la variazione, data dalla variabile 'risultato'
