@@ -77,7 +77,7 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
     if last_year < 0:
         last_year=abs(last_year)
 
-    lista anni=[]
+    lista_anni=[]
     #inizializzo una lista vuota in cui inserire gli anni presi in considerazione, in base all'intervallo di estremi first/last_year
 
     y=first_year
@@ -120,7 +120,7 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
             valore=(elemento[1])
             if valore == '':
                 #se il valore in una data riga non è presente...
-                valore=valore.replace('','o')
+                valore=valore.replace('','0')
                 #lo considero come uno zero
             valore= int(valore)
 
@@ -145,10 +145,10 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
     
     #alzo eccezioni se gli anni inseriti come input non sono presenti nel file
     if first_year not in anni:
-        raise ExamException('Il primo anno inserito nella funzione "compute_avg_monthly_difference" non è presente nel file)
+        raise ExamException('Il primo anno inserito nella funzione "compute_avg_monthly_difference" non è presente nel file')
     
     if last_year not in anni:
-        raise ExamException('Ultimo anno inserito nella funzione "compute_avg_monthly_difference" non presente nel file')
+        raise ExamException('Ultimo anno inserito nella funzione compute_avg_monthly_difference non presente nel file')
 
     #inizializzo la lista da far tornare alla funzione compute_avg_monthly_difference
     lista_variazioni=[]
@@ -171,7 +171,7 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
         #assegno alla variabile m il numero corrispondente alla lunghezza della lista 
         m=len(lista_valori)
         risultato=0
-        
+
         while m>1:
             risultato=risultato + lista_valori[m-1] - lista_valori [m-2]
             #ho la variazione, data dalla variabile 'risultato'
@@ -187,7 +187,6 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
     #stampo la lista solo come riferimento visivo
 
     return lista_variazioni
-
 
 
 
