@@ -13,7 +13,7 @@ class CSVTimeSeriesFile():
             my_file=open(self.name, 'r')
             my_file.readline()
         except:
-            raise ExamException('Errore in apertura file')
+            raise ExamException('Errore in apertura file: file non esistente o non leggibile')
         #nel caso non si aprisse, per esempio se il file non c'è o il nome del file inserito è sbagliato, alzo l'eccezione
 
         time_series=[]
@@ -59,7 +59,7 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
         #apro e leggo il file
         my_file.readline()
     except:
-        raise ExamException('Errore in apertura file')
+        raise ExamException('Errore in apertura file: file non esistente o non leggibile')
     
     #inizializzo una lista vuota in cui inserire i vari elementi del file ma sottoforma di valori interi e non stringhe
     lista=[]
