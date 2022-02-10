@@ -47,11 +47,7 @@ class CSVTimeSeriesFile():
                 
                 #aggiungo gli elementi sottoforma di lista nella lista inizializzata precedentemente
                 time_series.append(elements)
-            
-        for item in time_series:
-            #stampo ogni elemento della serie storica
-            print(item)
-
+                  
         return time_series
 
 
@@ -133,8 +129,8 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
 
             lista.append(new)
 
-    for item in lista:
-        print(item)
+    #for item in lista:
+        #print(item)
         #stampo gli elementi della lista 'lista'
         #ogni elemento sarà una lista formata da tre valori(anno, mese, numero)
 
@@ -183,9 +179,6 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
         #procedo con il mese successivo, rappresentato dall'indice i
         i=i+1
         
-    print('Lista variazioni: {}'.format(lista_variazioni))
-    #stampo la lista solo come riferimento visivo
-
     return lista_variazioni
 
 
@@ -196,6 +189,14 @@ time_series_file = CSVTimeSeriesFile(name='data.csv')
 
 time_series = time_series_file.get_data()
 
+print('Contenuto della lista "time_series":')
+for item in time_series:
+    #stampo ogni elemento della serie storica
+    print(item)
+
 avg_monthly_difference = compute_avg_monthly_difference(time_series, "1949", "1951")
 #la serie storica non viene inserita dall'utente ma viene ritornata dalla funzione get_data
 #l'utente inserisce gli estremi dell'intervallo di anni da considerare
+
+print('Lista variazioni: {}'.format(avg_monthly_difference))
+    #stampo la lista solo come riferimento visivo
