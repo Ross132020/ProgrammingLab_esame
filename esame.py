@@ -31,12 +31,11 @@ class CSVTimeSeriesFile():
             #se non sto processando l'intestazione, associo gli elementi
                 data=elements[0] 
                 #elements[0]=anno-mese
-
+              
                 #controllo se mancano valori
                 #nel caso mancassero, li considero come 0
                 if elements[1] == '':
-                    elements[1] =elements[1].replace('','0')
-
+                    elements[1] =elements[1].replace('','0')                    
                 #converto la stringa 'passengers' (secondo elemento della lista 'elements') in numero
                 elements[1] = float(elements[1])
 
@@ -66,7 +65,14 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
     
     #inizializzo una lista vuota in cui inserire i vari elementi del file ma sottoforma di valori interi e non stringhe
     lista=[]
+
+    #controllo che i valori inseriti come input siano numeri
+    if first_year.isdigit() is False:
+        raise ExamException('Errore: primo anno inserito non è un numero')
     
+    if last_year.isdigit() is False:
+        raise ExamException('Errore: ultimo anno inserito non è un numero')
+
     first_year= int(first_year)
     last_year=int(last_year)
     #passo i due valori inseriti nella funzione come interi, per utilizzarli nelle operazioni
@@ -114,7 +120,10 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
             new.append(anno)
             #aggiungo l'anno alla lista
 
-            mese=int(data[1])
+            mese=data[1]
+            if mese.isdigit() is False:
+                raise ExamException('Errore: numero mese  non espresso in numero')
+            mese=int(mese)
             #chiamo la seconda parte della stringa della data 'mese' e la passo come valore intero
 
             new.append(mese)
