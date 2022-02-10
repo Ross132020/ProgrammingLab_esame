@@ -122,7 +122,7 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
 
             mese=data[1]
             if mese.isdigit() is False:
-                raise ExamException('Errore: numero mese  non espresso in numero')
+                raise ExamException('Errore: numero mese  non espresso in numero o in numero positivo')
             mese=int(mese)
             #chiamo la seconda parte della stringa della data 'mese' e la passo come valore intero
 
@@ -173,7 +173,7 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
         lista_valori=[]
 
         for item in lista:
-        #item= elemento della lista= anno + mese + numero passeggeri
+        #item è l'elemento della lista e corrisponde a: anno + mese + numero passeggeri
             #vedo se il mese di ogni riga è uguale al numero dell'indice i, considerando anche se l'anno di quella riga è presente nella lista_anni
             #lista_anni= lista che raccoglie gli anni compresi nell'intervallo tra first_year e last_year
             if item[1]==i and item[0] in lista_anni:
@@ -214,18 +214,17 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
 
 #Corpo del programma
 
-time_series_file = CSVTimeSeriesFile(name='data.csv')
+#time_series_file = CSVTimeSeriesFile(name='data.csv')
 
-time_series = time_series_file.get_data()
+#time_series = time_series_file.get_data()
 
-print('Contenuto della lista "time_series":')
-for item in time_series:
+#print('Contenuto della lista "time_series":')
+#for item in time_series:
     #stampo ogni elemento della serie storica
-    print(item)
+    #print(item)
 
-avg_monthly_difference = compute_avg_monthly_difference(time_series, "1949", "1951")
+#avg_monthly_difference = compute_avg_monthly_difference(time_series, "1949", "1951")
 #la serie storica non viene inserita dall'utente ma viene ritornata dalla funzione get_data
-#l'utente inserisce gli estremi dell'intervallo di anni da considerare
 
-print('Lista variazioni: {}'.format(avg_monthly_difference))
+#print('Lista variazioni: {}'.format(avg_monthly_difference))
     #stampo la lista solo come riferimento visivo
