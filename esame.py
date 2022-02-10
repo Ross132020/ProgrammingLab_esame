@@ -56,12 +56,12 @@ class CSVTimeSeriesFile():
 def compute_avg_monthly_difference(time_series, first_year, last_year):
 #time_series=serie storica tornata dalla funzione get_data
 #first_year e last_year sono gli estremi dell'intervallo di anni che si vuole considerare e vengono inseriti manualmente nel corpo del programma
-    try:
-        my_file=open('data.csv','r')
+    #try:
+        #my_file=open('data.csv','r')
         #apro e leggo il file
-        my_file.readline()
-    except:
-        raise ExamException('Errore in apertura file: file non esistente o non leggibile')
+        #my_file.readline()
+    #except:
+        #raise ExamException('Errore in apertura file: file non esistente o non leggibile')
     
     #inizializzo una lista vuota in cui inserire i vari elementi del file ma sottoforma di valori interi e non stringhe
     lista=[]
@@ -96,24 +96,23 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
     
     lungh_intervallo=len(lista_anni)
 
-    for line in my_file:
-        elemento=line.split(',')
+    for item in time_series:
+        #elemento=line.split(',')
         #divido la riga in data e passeggeri
-
-        elemento[-1] = elemento[-1].strip()
+       
+        #elemento[-1] = elemento[-1].strip()
         #tolgo lo '/n' ed eventuali spazi
-
-        if elemento[0] != 'date':
             #se non sto processando l'intestazione...
             #creo una lista vuota in cui aggiungere per ogni riga del file: anno, mese e passeggeri
             new=[]
 
-            data=elemento[0]
             #chiamo 'data' la stringa contenente anno e mese
-            data=data.split('-')
+            data=item[0].split('-')
+
             #divido la stringa 'data'
 
             anno=int(data[0])
+
             #chiamo 'anno' la prima parte della stringa 'data'
             #passo da stringa a valore intervallo
 
@@ -129,7 +128,7 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
             new.append(mese)
             #aggiungo il mese alla lista 'new'
 
-            valore=(elemento[1])
+            valore=(item[1])
             if valore == '':
                 #se il valore in una data riga non è presente...
                 valore=valore.replace('','0')
@@ -152,8 +151,8 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
 
     #inizializzo una lista vuota in cui aggiungo tutti gli anni del file
     anni=[]
-    for item in lista:
-        anni.append(item[0])
+    for items in lista:
+        anni.append(items[0])
     
     #alzo eccezioni se gli anni inseriti come input non sono presenti nel file
     if first_year not in anni:
@@ -183,7 +182,7 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
         #assegno alla variabile m il numero corrispondente alla lunghezza della lista 
         m=len(lista_valori)
         risultato=0
-
+       
         while m>1:
             risultato=risultato + lista_valori[m-1] - lista_valori [m-2]
             #ho la variazione, data dalla variabile 'risultato'
@@ -203,7 +202,7 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
         i=i+1
     
     # Chiudo il file
-    my_file.close()
+    #my_file.close()
     
     return lista_variazioni
 
@@ -223,7 +222,7 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
     #stampo ogni elemento della serie storica
     #print(item)
 
-#avg_monthly_difference = compute_avg_monthly_difference(time_series, "1949", "1951")
+#avg_monthly_difference = compute_avg_monthly_difference(time_series, "1950", "1954")
 #la serie storica non viene inserita dall'utente ma viene ritornata dalla funzione get_data
 
 #print('Lista variazioni: {}'.format(avg_monthly_difference))
