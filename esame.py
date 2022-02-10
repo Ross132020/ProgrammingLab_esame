@@ -47,6 +47,9 @@ class CSVTimeSeriesFile():
                 
                 #aggiungo gli elementi sottoforma di lista nella lista inizializzata precedentemente
                 time_series.append(elements)
+              
+        # Chiudo il file
+        my_file.close()
                   
         return time_series
 
@@ -73,6 +76,10 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
     if last_year < 0:
         last_year=abs(last_year)
 
+    #controllo che il primo anno inserito sia < dell'estremo superiore dell'intervallo degli anni da considerare
+    if first_year > last_year:
+        raise ExamException('Errore inserimento estremi intervallo anni: il primo anno non può essere inferiore a ultimo anno')
+
     lista_anni=[]
     #inizializzo una lista vuota in cui inserire gli anni presi in considerazione, in base all'intervallo di estremi first/last_year
 
@@ -80,7 +87,7 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
     while y <= last_year:
         lista_anni.append(y)
         y=y+1
-    print('Lista intervallo anni: {}'.format(lista_anni))
+    
     lungh_intervallo=len(lista_anni)
 
     for line in my_file:
@@ -172,14 +179,27 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
             risultato=risultato + lista_valori[m-1] - lista_valori [m-2]
             #ho la variazione, data dalla variabile 'risultato'
             m=m-1
-        variazione_mese=risultato/(len(lista_valori)-1)
+        if m == 1:
+            try:   
+                variazione_mese=risultato/((len(lista_valori))-1)
         #calcolo la variazione media mensile
+            except:
+                raise ExamException('Errore: non posso dividere per zero')
+            else:
+                variazione_mese=risultato/(len(lista_valori)-1)
+                
 
         lista_variazioni.append(variazione_mese)
         #procedo con il mese successivo, rappresentato dall'indice i
         i=i+1
-        
+    
+    # Chiudo il file
+    my_file.close()
+    
     return lista_variazioni
+
+
+
 
 
 
